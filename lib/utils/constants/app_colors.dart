@@ -7,6 +7,7 @@ class AppColors {
   static const greyColor = Color(0xff979797);
   static const blackHeading = Color(0xff262626);
   static const lightBlack = Color(0xff5B5B5B);
+  static const whiteColor = Color(0XFFFFFFFF);
   static const Map<int, Color> color = {
     50: Color.fromRGBO(37, 186, 251, .1),
     100: Color.fromRGBO(37, 186, 251, .2),
