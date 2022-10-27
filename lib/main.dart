@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Open Sans',
         primarySwatch: AppColors.customPrimaryColor,
       ),
-      home: Scaffold(body: const BottomBar()),
+      home: Scaffold(body: const HomeView()),
     );
   }
 }

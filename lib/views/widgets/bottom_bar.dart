@@ -12,45 +12,47 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<BottomBarViewModel>.reactive(
       viewModelBuilder: () => BottomBarViewModel(),
-      builder: (context, viewModel, _) => Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        elevation: 5,
-        child: Container(
-          height: 55,
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-              color: AppColors.whiteColor,
-              border: Border.all(color: AppColors.whiteColor),
-              borderRadius: const BorderRadius.all(Radius.circular(20))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              tapIcon(
-                model: viewModel,
-                index: 0,
-                assetImage: AppImages.home,
-                assetName: AppStrings.home,
-              ),
-              tapIcon(
+      builder: (context, viewModel, _) => Center(
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          elevation: 5,
+          child: Container(
+            height: 55,
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+                color: AppColors.whiteColor,
+                border: Border.all(color: AppColors.whiteColor),
+                borderRadius: const BorderRadius.all(Radius.circular(20))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                tapIcon(
                   model: viewModel,
-                  index: 1,
-                  assetImage: AppImages.shops,
-                  assetName: AppStrings.shopes),
-              tapIcon(
-                  model: viewModel,
-                  index: 2,
-                  assetImage: AppImages.portfolio,
-                  assetName: AppStrings.portfolio),
-              tapIcon(
-                  model: viewModel,
-                  index: 3,
-                  assetImage: AppImages.menu,
-                  assetName: AppStrings.menu),
-            ],
+                  index: 0,
+                  assetImage: AppImages.home,
+                  assetName: AppStrings.home,
+                ),
+                tapIcon(
+                    model: viewModel,
+                    index: 1,
+                    assetImage: AppImages.shops,
+                    assetName: AppStrings.shopes),
+                tapIcon(
+                    model: viewModel,
+                    index: 2,
+                    assetImage: AppImages.portfolio,
+                    assetName: AppStrings.portfolio),
+                tapIcon(
+                    model: viewModel,
+                    index: 3,
+                    assetImage: AppImages.menu,
+                    assetName: AppStrings.menu),
+              ],
+            ),
           ),
         ),
       ),

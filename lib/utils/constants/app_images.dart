@@ -8,4 +8,5 @@ class AppImages {
   static const String search = "assets/images/search.png";
   static const String shops = "assets/images/shops.png";
   static const String logo = "assets/images/logo.png";
+  static const String google = "assets/images/Google.png";
 }
