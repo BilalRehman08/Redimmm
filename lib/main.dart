@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:redimm/utils/constants/app_colors.dart';
 import 'package:redimm/views/home_view.dart';
 
 void main() {
@@ -10,8 +11,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeView(),
+    return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Open Sans',
+        primarySwatch: AppColors.customPrimaryColor,
+      ),
+      home: const HomeView(),
     );
   }
 }
