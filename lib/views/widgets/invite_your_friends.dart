@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:redimm/utils/constants/app_colors.dart';
+import 'package:redimm/utils/constants/app_images.dart';
+import 'package:redimm/utils/constants/app_strings.dart';
 
 class InviteYourFriends extends StatelessWidget {
   const InviteYourFriends({super.key});
@@ -6,18 +9,18 @@ class InviteYourFriends extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 100,
+        height: 110,
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-            color: const Color(0xffE5F8FF),
-            border: Border.all(color: const Color(0xffE5F8FF)),
+            color: AppColors.lightBlue,
+            border: Border.all(color: AppColors.lightBlue),
             borderRadius: const BorderRadius.all(Radius.circular(20))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset(
-              'assets/images/friends.png',
+              AppImages.persons,
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
@@ -26,20 +29,25 @@ class InviteYourFriends extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    "Invite Your Friends",
+                    AppStrings.inviteFriends,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "To earn extra cashback when they spend at Redim merchant locations",
-                    // style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    AppStrings.inviteFriendsPara,
                   ),
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {},
+            Container(
+              decoration: const BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              height: 55,
+              width: 55,
               child: Image.asset(
-                'assets/images/check.png',
+                AppImages.arrow,
+                height: 20,
+                width: 20,
               ),
             ),
           ],
