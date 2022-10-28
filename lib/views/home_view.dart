@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:redimm/logic/cubit/categories/categories_cubit.dart';
+import 'package:redimm/logic/cubit/stores/stores_cubit.dart';
 import 'package:redimm/utils/constants/app_colors.dart';
 import 'package:redimm/utils/constants/app_constants.dart';
 import 'package:redimm/utils/constants/app_images.dart';
@@ -20,6 +22,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<StoresCubit>(context).fetchTopStores();
     BlocProvider.of<CategoriesCubit>(context).fetchTopCategories();
   }
 
@@ -122,7 +125,21 @@ class _HomeViewState extends State<HomeView> {
                       )
                     ],
                   ),
-                  topBrandsCard(context: context),
+                  BlocBuilder<StoresCubit, StoreState>(
+                      builder: (context, state) => state.storeLoading != "true"
+                          ? SizedBox(
+                              height: getDeviceHeight(context) * 0.35,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.storeList!.length,
+                                  itemBuilder: (context, index) =>
+                                      topBrandsCard(
+                                        context: context,
+                                        state: state,
+                                        index: index,
+                                      )),
+                            )
+                          : const CircularProgressIndicator()),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -218,20 +235,24 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  topBrandsCard({required BuildContext context}) {
+  topBrandsCard({
+    required BuildContext context,
+    required StoreState state,
+    required int index,
+  }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      padding: const EdgeInsets.all(10.0),
       child: SizedBox(
-        height: getDeviceHeight(context) * 0.25,
+        height: getDeviceHeight(context) * 0.3,
         width: getDeviceWidth(context) * 0.5,
         child: Stack(children: [
           Positioned(
-            top: 90,
+            top: 110,
             left: 0.0,
             right: 0.0,
             child: Container(
                 padding: const EdgeInsets.all(10),
-                height: getDeviceHeight(context) * 0.125,
+                height: getDeviceHeight(context) * 0.15,
                 width: getDeviceWidth(context) * 0.5,
                 decoration: BoxDecoration(
                     border: Border.all(color: AppColors.greyColor),
@@ -242,47 +263,52 @@ class _HomeViewState extends State<HomeView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Google",
-                      style: TextStyle(
+                    Text(
+                      state.storeList![index].name!,
+                      style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColors.blackHeading),
                     ),
                     Row(
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.star,
                           color: AppColors.orangeRatingColor,
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Text(
-                          "4.6",
-                          style: TextStyle(
+                          state.storeList![index].rating!.toString(),
+                          style: const TextStyle(
                               fontSize: 16,
                               color: AppColors.greyColorDark,
                               fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
-                    Row(
-                      children: const [
-                        Text(
-                          "Up to 4% ",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        Text(
-                          "was 3%",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.greyColorDark,
-                              fontWeight: FontWeight.w700),
-                        )
-                      ],
-                    )
+                    // Row(
+                    //   children: [
+                    Flexible(
+                      child: Text(
+                        Bidi.stripHtmlIfNeeded(
+                            state.storeList![index].description!),
+                        maxLines: 2,
+                        style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 16,
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    // const Text(
+                    //   "was 3%",
+                    //   style: TextStyle(
+                    //       fontSize: 16,
+                    //       color: AppColors.greyColorDark,
+                    //       fontWeight: FontWeight.w700),
+                    // )
+                    //   ],
+                    // )
                   ],
                 )),
           ),
@@ -291,14 +317,14 @@ class _HomeViewState extends State<HomeView> {
             left: 0.0,
             right: 0.0,
             child: Container(
-                height: getDeviceHeight(context) * 0.125,
+                height: getDeviceHeight(context) * 0.15,
                 width: getDeviceWidth(context) * 0.5,
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
                     color: Colors.teal),
-                child: Image.asset(AppImages.persons)),
+                child: Image.network(state.storeList![index].logo!)),
           ),
         ]),
       ),
