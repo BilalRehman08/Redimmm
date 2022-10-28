@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Open Sans',
         primarySwatch: AppColors.customPrimaryColor,
       ),
-      home: Scaffold(body: const InviteYourFriends()),
+      home: Scaffold(body: const HomeView()),
     );
   }
 }

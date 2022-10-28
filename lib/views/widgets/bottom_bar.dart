@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:redimm/logic/bottom_bar_viewmodel.dart';
 import 'package:redimm/utils/constants/app_colors.dart';
+import 'package:redimm/utils/constants/app_constants.dart';
 import 'package:redimm/utils/constants/app_images.dart';
 import 'package:redimm/utils/constants/app_strings.dart';
 import 'package:stacked/stacked.dart';
@@ -17,11 +18,11 @@ class BottomBar extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           elevation: 5,
           child: Container(
-            height: 55,
-            width: MediaQuery.of(context).size.width,
+            height: getDeviceHeight(context) * 0.07,
+            width: getDeviceWidth(context),
             margin: const EdgeInsets.all(20),
             decoration: BoxDecoration(
                 color: AppColors.whiteColor,
