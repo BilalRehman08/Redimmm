@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class BottomBarViewModel extends BaseViewModel {
@@ -5,6 +6,6 @@ class BottomBarViewModel extends BaseViewModel {
   tappedHomeIcon(int count) {
     counter = count;
     notifyListeners();
-    print(counter);
+    debugPrint(counter.toString());
   }
 }

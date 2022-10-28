@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:redimm/logic/cubit/categories/categories_cubit.dart';
 import 'package:redimm/utils/constants/app_colors.dart';
 import 'package:redimm/utils/constants/app_constants.dart';
 import 'package:redimm/utils/constants/app_images.dart';
 import 'package:redimm/views/widgets/bottom_bar.dart';
 import 'package:redimm/views/widgets/invite_your_friends.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<CategoriesCubit>(context).fetchTopCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +84,10 @@ class HomeView extends StatelessWidget {
             top: 250,
             right: 0,
             left: 0,
+            bottom: 0,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              padding: const EdgeInsets.only(
+                  top: 20, left: 10, right: 10, bottom: 130),
               decoration: const BoxDecoration(
                   color: AppColors.whiteColor,
                   borderRadius: BorderRadius.only(
@@ -132,7 +149,23 @@ class HomeView extends StatelessWidget {
                       )
                     ],
                   ),
-                  topCategoriesCard(context: context),
+                  BlocBuilder<CategoriesCubit, CategoriesState>(
+                      builder: (context, state) =>
+                          state.categoryLoading != "true"
+                              ? SizedBox(
+                                  height: getDeviceHeight(context) * 0.25,
+                                  child: ListView.builder(
+                                      // shrinkWrap: t,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: state.categoriesList!.length,
+                                      itemBuilder: (context, index) =>
+                                          topCategoriesCard(
+                                            context: context,
+                                            state: state,
+                                            index: index,
+                                          )),
+                                )
+                              : const CircularProgressIndicator()),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -159,7 +192,16 @@ class HomeView extends StatelessWidget {
                       )
                     ],
                   ),
-                  const Text("Shop on your interested stores just viewed!"),
+                  SizedBox(height: getDeviceHeight(context) * 0.02),
+                  const Text(
+                    "Shop on your interested stores just viewed!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: AppColors.greyColorDark,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(height: getDeviceHeight(context) * 0.02),
                   const InviteYourFriends()
                 ],
               )),
@@ -177,68 +219,122 @@ class HomeView extends StatelessWidget {
   }
 
   topBrandsCard({required BuildContext context}) {
-    return SizedBox(
-      height: getDeviceHeight(context) * 0.2,
-      width: getDeviceWidth(context) * 0.4,
-      child: Stack(children: [
-        Positioned(
-          top: 80,
-          left: 0.0,
-          right: 0.0,
-          child: Container(
-              height: getDeviceHeight(context) * 0.1,
-              width: getDeviceWidth(context) * 0.4,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.red),
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Google"),
-                  Row(
-                    children: const [
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
-                      Text("4.6")
-                    ],
-                  ),
-                  Row(
-                    children: const [Text("Up to 4% "), Text("was 3%")],
-                  )
-                ],
-              )),
-        ),
-        Positioned(
-          top: 0,
-          left: 0.0,
-          right: 0.0,
-          child: Container(
-              height: getDeviceHeight(context) * 0.1,
-              width: getDeviceWidth(context) * 0.4,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
-                  color: Colors.teal),
-              child: Image.asset(AppImages.persons)),
-        ),
-      ]),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      child: SizedBox(
+        height: getDeviceHeight(context) * 0.25,
+        width: getDeviceWidth(context) * 0.5,
+        child: Stack(children: [
+          Positioned(
+            top: 90,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+                padding: const EdgeInsets.all(10),
+                height: getDeviceHeight(context) * 0.125,
+                width: getDeviceWidth(context) * 0.5,
+                decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.greyColor),
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Google",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.blackHeading),
+                    ),
+                    Row(
+                      children: const [
+                        Icon(
+                          Icons.star,
+                          color: AppColors.orangeRatingColor,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "4.6",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.greyColorDark,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: const [
+                        Text(
+                          "Up to 4% ",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          "was 3%",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.greyColorDark,
+                              fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    )
+                  ],
+                )),
+          ),
+          Positioned(
+            top: 0,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+                height: getDeviceHeight(context) * 0.125,
+                width: getDeviceWidth(context) * 0.5,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    color: Colors.teal),
+                child: Image.asset(AppImages.persons)),
+          ),
+        ]),
+      ),
     );
   }
 
-  topCategoriesCard({required BuildContext context}) {
-    return Column(
-      children: [
-        Container(
-          color: Colors.red,
-          child: Image.asset(AppImages.logo),
+  topCategoriesCard({
+    required BuildContext context,
+    required CategoriesState state,
+    required int index,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: SizedBox(
+        width: getDeviceWidth(context) * 0.2,
+        child: Column(
+          children: [
+            Container(
+              height: getDeviceHeight(context) * 0.1,
+              width: getDeviceWidth(context) * 0.2,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(
+                      int.parse("0xFF${state.categoriesList![index].color!}"))),
+              child: SvgPicture.network(state.categoriesList![index].icon!),
+            ),
+            Text(
+              state.categoriesList![index].name!,
+              textAlign: TextAlign.center,
+              style:
+                  const TextStyle(color: AppColors.greyColorDark, fontSize: 16),
+            )
+          ],
         ),
-        Text("Category Name")
-      ],
+      ),
     );
   }
 }

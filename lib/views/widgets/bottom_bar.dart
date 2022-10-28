@@ -65,7 +65,7 @@ Widget tapIcon(
     {String? assetImage, String? assetName, BottomBarViewModel? model, index}) {
   return InkWell(
     onTap: () {
-      print("obj: $index");
+      debugPrint("obj: $index");
       model.tappedHomeIcon(index);
     },
     child: SizedBox(
