@@ -11,7 +11,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
 
   fetchTopCategories() async {
     List<CategoriesModel> catList = [];
-    await categoryRepository.fetchTopCategories().then((value) {
+    await categoryRepository.fetchTopCategoriesRepo().then((value) {
       if (value.isNotEmpty) {
         catList.addAll(value);
         emit(state.copyWith(categoriesListt: catList));

@@ -4,7 +4,7 @@ import 'package:redimm/resources/provider/categories_provider.dart';
 class CategoriesRepository {
   final _provider = CategoriesProvider();
 
-  Future<List<CategoriesModel>> fetchTopCategories() {
+  Future<List<CategoriesModel>> fetchTopCategoriesRepo() {
     return _provider.fetchTopCategories();
   }
 }

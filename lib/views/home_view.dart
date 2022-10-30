@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:redimm/logic/cubit/categories/categories_cubit.dart';
 import 'package:redimm/logic/cubit/stores/stores_cubit.dart';
+import 'package:redimm/logic/cubit/users/user_cubit.dart';
 import 'package:redimm/utils/constants/app_colors.dart';
 import 'package:redimm/utils/constants/app_constants.dart';
 import 'package:redimm/utils/constants/app_images.dart';
@@ -20,8 +21,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    // BlocProvider.of<UserCubit>(context).getUser();
     BlocProvider.of<StoresCubit>(context).fetchTopStores();
     BlocProvider.of<CategoriesCubit>(context).fetchTopCategories();
   }
@@ -59,13 +60,19 @@ class _HomeViewState extends State<HomeView> {
                   ],
                 ),
                 SizedBox(height: getDeviceHeight(context) * 0.03),
-                const Text(
-                  "Hey, John Appleseed",
-                  style: TextStyle(
-                      color: AppColors.whiteColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20),
-                ),
+                BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+                  // if (state.userLoading == true) {
+                  //   return const CircularProgressIndicator();
+                  // } else {
+                  return const Text(
+                    "Hey, John Appleseed",
+                    style: TextStyle(
+                        color: AppColors.whiteColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20),
+                  );
+                  // }
+                }),
                 const Text(
                   "\$0.00",
                   style: TextStyle(

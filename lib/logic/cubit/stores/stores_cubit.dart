@@ -11,7 +11,7 @@ class StoresCubit extends Cubit<StoreState> {
 
   fetchTopStores() async {
     List<StoresModel> storeList = [];
-    await storeRepository.fetchTopStores().then((value) {
+    await storeRepository.fetchTopStoresRepo().then((value) {
       if (value.isNotEmpty) {
         storeList.addAll(value);
         emit(state.copyWith(storeListt: storeList));
